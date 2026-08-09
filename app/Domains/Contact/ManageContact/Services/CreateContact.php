@@ -85,8 +85,7 @@ class CreateContact extends BaseService implements ServiceInterface
 
     private function createContact(): void
     {
-        // template - if no template is provided, we should use the default
-        // template that is in the vault - if it exists.
+        
         $templateId = $this->valueOrNull($this->data, 'template_id');
         if (! $templateId) {
             $templateId = $this->vault->default_template_id;

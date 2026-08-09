@@ -10,6 +10,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 
@@ -19,7 +20,7 @@ class ProcessContactImportJob implements ShouldQueue
 
     public int $timeout = 1800;
     public int $tries = 3;
-    public int $backoff = 10; 
+    public int $backoff = 10;
 
     public function __construct(public ImportJobs $importJob) {}
 
@@ -59,13 +60,26 @@ class ProcessContactImportJob implements ShouldQueue
             while (($row = fgetcsv($handle)) !== false) {
                 $rowNumber++;
 
+                if ($rowNumber === 1 || $rowNumber % 20 === 0) {
+                    $currentStatus = ImportJobs::where('id', $this->importJob->id)->value('status');
+
+                    if (in_array($currentStatus, ['cancelling', 'cancelled'])) {
+                        fclose($handle);
+                        $this->importJob->update([
+                            'status'       => 'cancelled',
+                            'completed_at' => now(),
+                        ]);
+                        return; 
+                    }
+                }
+
                 if ($rowNumber <= ($this->importJob->processed_rows + $this->importJob->failed_rows)) {
                     continue;
                 }
 
                 $rowData = array_combine($header, array_pad($row, count($header), null));
 
-                DB::transaction(function () use ($rowData, $createContact, $rowNumber) {
+                DB::transaction(function () use ($rowData, $createContact) {
                     $contactPayload = [
                         'account_id'  => $this->importJob->account_id,
                         'author_id'   => $this->importJob->user_id,
@@ -101,7 +115,6 @@ class ProcessContactImportJob implements ShouldQueue
                 'completed_at' => now(),
             ]);
         } catch (Throwable $exception) {
-            
             if (isset($rowNumber) && $rowNumber > ($this->importJob->processed_rows + $this->importJob->failed_rows)) {
                 ImportError::create([
                     'import_jobs_id' => $this->importJob->id,
@@ -117,7 +130,7 @@ class ProcessContactImportJob implements ShouldQueue
                 'failure_message' => $exception->getMessage(),
             ]);
 
-            throw $exception; 
+            throw $exception;
         }
     }
 }

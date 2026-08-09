@@ -6,7 +6,7 @@ use App\Domains\Contact\ManageContact\Jobs\ProcessContactImportJob;
 use App\Interfaces\ServiceInterface;
 use App\Models\ImportJobs;
 use App\Services\BaseService;
-use Illuminate\Http\UploadedFile;
+
 
 class ImportContacts extends BaseService implements ServiceInterface
 {

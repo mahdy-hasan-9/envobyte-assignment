@@ -15,12 +15,6 @@ class ContactController extends Controller
 {
     public function import(Request $request)
     {
-
-        DB::table('import_jobs')->delete();
-        DB::table('import_errors')->delete();
-        DB::table('contacts')->where('pronoun_id', '!=', null)->delete();
-
-
         $validated = $request->validate([
             'vault_id' => ['required', 'string', 'exists:vaults,id'],
             'contacts' => ['required', 'file', 'mimes:csv', 'max:10240'],
@@ -53,7 +47,6 @@ class ContactController extends Controller
 
     public function show(string $importJobId)
     {
-
         $importJob = ImportJobs::query()
             ->where('account_id', Auth::user()->account_id)
             ->where('id', $importJobId)
@@ -76,4 +69,29 @@ class ContactController extends Controller
             ],
         ], 200);
     }
+
+
+
+    public function cancel(Request $request)
+    {
+
+        $data = $request->validate([
+            'importJobId' => 'required'
+        ]);
+
+        $importJob = ImportJobs::query()
+            ->where('account_id', Auth::user()->account_id)
+            ->where('id', $request->input('importJobId'))
+            ->whereIn('status', ['pending', 'processing'])
+            ->firstOrFail();
+
+        Gate::authorize('vault-editor', $importJob->vault_id);
+        
+        $importJob->update(['status' => 'cancelling']);
+
+        return response()->json([
+            'message' => 'Import cancellation requested successfully.',
+        ], 200);
+    }
+
 }
