@@ -26,44 +26,44 @@
   for canceling uploading file. <br/>
 
 
-●​ Which existing components you reused or modified
-  i'm reused these 
-  use App\Domains\Contact\ManageContact\Services\CreateContact;
-  service to save contacts .
-  Following same to same monica crm coding pattern and conventions.
+●​ Which existing components you reused or modified <br/>
+  i'm reused these <br/>
+  use App\Domains\Contact\ManageContact\Services\CreateContact; <br/>
+  service to save contacts. <br/>
+  Following same to same monica crm coding pattern and conventions. <br/>
 
-●​ Any important assumptions you made
-  yes. I have written a controller er Domains/Contact/ManageContact/Api/Controllers/ContactController.php
-  and validate uploading file and pass validated data to service with this controller.
-  following monica crm coding pattern and conventions.
+●​ Any important assumptions you made <br/>
+  yes. I have written a controller er Domains/Contact/ManageContact/Api/Controllers/ContactController.php <br/>
+  and validate uploading file and pass validated data to service with this controller. <br/>
+  following monica crm coding pattern and conventions. <br/>
   creating ImportContacts service validating rules , essential methods and pass to the 
-  ProcessContactImportJob job.
-  ProcessContactImportJob process file and save validate data to contacts table and in-valid data to import_errors table.
+  ProcessContactImportJob job. <br/>
+  ProcessContactImportJob process file and save validate data to contacts table and in-valid data to import_errors table. <br/>
 
 
 
 <h3 align="center">Technical Questions</h3>
 
-*How would you allow a user to cancel a running import?
-Here, i'm using and endpoint "api/import/contacts/cancel" to updating file status "processing" to "cancelling",
+*How would you allow a user to cancel a running import? <br/>
+Here, i'm using and endpoint "api/import/contacts/cancel" to updating file status "processing" to "cancelling", <br/>
 then have written a coding previously inside ProcessContactImportJob to check if 
-status is "cancelling" or not if every 20 rows of import?
-if cancle endpoint change status to cancelling then condition will be true and exit the process.
+status is "cancelling" or not if every 20 rows of import? <br/>
+if cancle endpoint change status to cancelling then condition will be true and exit the process. <br/>
 
-*What metrics would you monitor for this import system?
-  these "api/import/{id}" returning use the current states of data.
+*What metrics would you monitor for this import system? <br/>
+  these "api/import/{id}" returning use the current states of data. <br/>
 
 
 <h3 align="center">Technical Review</h3>
 
-Import work flow working like this , 
-Coding convention is same to same like monica crm existing codes.
+Import work flow working like this ,  <br/>
+Coding convention is same to same like monica crm existing codes. <br/>
 
-1. api/import - route - endpoint 
-  controller - Domains/Contact/ManageContact/Api/Controllers/ContactController.php
+1. api/import - route - endpoint  <br/>
+  controller - Domains/Contact/ManageContact/Api/Controllers/ContactController.php <br/>
   *********
   import method 
-  ***********
+  ***********  
     1.validating valid vault_id and contacts.csv file.
     2.checking authorization for vault_editor.
     3.validate contacts.csv file.
