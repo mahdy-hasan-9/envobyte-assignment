@@ -44,13 +44,13 @@
 
 <h3 align="center">Technical Questions</h3>
 
-*How would you allow a user to cancel a running import? <br/>
+●​ How would you allow a user to cancel a running import? <br/>
 Here, i'm using and endpoint "api/import/contacts/cancel" to updating file status "processing" to "cancelling", <br/>
 then have written a coding previously inside ProcessContactImportJob to check if 
 status is "cancelling" or not if every 20 rows of import? <br/>
 if cancle endpoint change status to cancelling then condition will be true and exit the process. <br/>
 
-*What metrics would you monitor for this import system? <br/>
+●​ What metrics would you monitor for this import system? <br/>
   these "api/import/{id}" returning use the current states of data. <br/>
 
 
