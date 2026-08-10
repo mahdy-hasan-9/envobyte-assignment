@@ -10,20 +10,20 @@
 <h3 align="center">Problem Analysis</h3>
 
 ●​. How the existing import flow works <br/>
-  api/import - route - endpoint 
-  Domains/Contact/ManageContact/Api/Controllers/ContactController.php
-  import() method.
-  upload file , validate and process valid data from file for contacts table and invalid data for error table.
+  api/import - route - endpoint <br/>
+  Domains/Contact/ManageContact/Api/Controllers/ContactController.php <br/>
+  import() method. <br/>
+  upload file , validate and process valid data from file for contacts table and invalid data for error table. <br/>
 
-  api/import/{id} - route - endpoint 
-  Domains/Contact/ManageContact/Api/Controllers/ContactController.php
-  show() method.
-  checking progress for single recorde of uploaded file
+  api/import/{id} - route - endpoint  <br/>
+  Domains/Contact/ManageContact/Api/Controllers/ContactController.php <br/>
+  show() method. <br/>
+  checking progress for single recorde of uploaded file <br/>
 
-  import/contacts/cancel - route - endpoint
-  Domains/Contact/ManageContact/Api/Controllers/ContactController.php
-  cancel() method.
-  for canceling uploading file.
+  import/contacts/cancel - route - endpoint <br/>
+  Domains/Contact/ManageContact/Api/Controllers/ContactController.php <br/>
+  cancel() method. <br/>
+  for canceling uploading file. <br/>
 
 
 ●​ Which existing components you reused or modified
